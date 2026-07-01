@@ -12,6 +12,7 @@ export type SlashCommandKind =
   | "usage"
   | "mcp"
   | "raw"
+  | "keybind"
   | "exit";
 
 export type SlashCommandItem = {
@@ -84,6 +85,13 @@ export const BUILTIN_SLASH_COMMANDS: SlashCommandItem[] = [
     label: "/raw",
     args: ["lite", "normal", "raw-scrollback"],
     description: "Toggle display mode for viewing or collapsing reasoning content",
+  },
+  {
+    kind: "keybind",
+    name: "keybind",
+    label: "/keybind",
+    args: ["add <shortcut> <action>", "remove <shortcut>", "list"],
+    description: "Add, remove, or list custom keybinds",
   },
   {
     kind: "exit",

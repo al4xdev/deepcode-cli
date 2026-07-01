@@ -13,6 +13,7 @@ import { findExpandedThinkingId } from "../core/thinking-state";
 import { WelcomeScreen } from "./WelcomeScreen";
 import { AskUserQuestionPrompt } from "./AskUserQuestionPrompt";
 import { McpStatusList } from "./McpStatusList";
+import { KeybindsView } from "./KeybindsView";
 import { UsageView, type UsageData } from "./UsageView";
 import { ProcessStdoutView } from "./ProcessStdoutView";
 import {
@@ -52,7 +53,7 @@ import { SessionManager } from "@vegamo/deepcode-core";
 import { getCompactPromptTokenThreshold } from "@vegamo/deepcode-core";
 import { writeStdout, writeStdoutLine } from "../../utils/stdio-helpers";
 
-type View = "chat" | "session-list" | "undo" | "usage" | "mcp-status";
+type View = "chat" | "session-list" | "undo" | "usage" | "keybinds" | "mcp-status";
 
 const STATUS_SPINNER_FRAMES = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
 
@@ -400,6 +401,10 @@ function App({ projectRoot, initialPrompt, resumeSessionId, onRestart }: AppProp
         void handleUsage();
         return;
       }
+      if (submission.command === "keybind") {
+        navigateToSubView("keybinds");
+        return;
+      }
 
       const prompt: UserPromptContent = {
         text: submission.text,
@@ -539,6 +544,11 @@ function App({ projectRoot, initialPrompt, resumeSessionId, onRestart }: AppProp
   const handleExitShortcut = useCallback(() => {
     handleExit({ showCommand: false, showSummary: false });
   }, [handleExit]);
+
+  const handleKeybindsChanged = useCallback(() => {
+    const next = resolveCurrentSettings(projectRoot);
+    setResolvedSettings(next);
+  }, [projectRoot]);
 
   const reloadActiveSessionView = useCallback(
     (sessionId: string): void => {
@@ -985,6 +995,8 @@ function App({ projectRoot, initialPrompt, resumeSessionId, onRestart }: AppProp
             setView("chat");
           }}
         />
+      ) : view === "keybinds" ? (
+        <KeybindsView keybinds={resolvedSettings.keybinds} projectRoot={projectRoot} onCancel={() => setView("chat")} />
       ) : view === "mcp-status" ? (
         <McpStatusList
           statuses={mcpStatuses}
@@ -1030,6 +1042,8 @@ function App({ projectRoot, initialPrompt, resumeSessionId, onRestart }: AppProp
           onInterrupt={handleInterrupt}
           onToggleProcessStdout={handleToggleProcessStdout}
           onExitShortcut={handleExitShortcut}
+          onKeybindsChanged={handleKeybindsChanged}
+          keybinds={resolvedSettings.keybinds}
           placeholder="Type your message..."
           statusLineSegments={statusLineSegments}
           statusLineSeparator={resolvedSettings.statusline.separator}
