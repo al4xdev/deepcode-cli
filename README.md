@@ -16,6 +16,9 @@
 <br/>
 </div>
 
+> ⚠️ **This is a fork of [Deep Code CLI](https://github.com/lessweb/deepcode-cli).**
+> Maintained by [al4xdev](https://github.com/al4xdev). Adds `/usage` command (DeepSeek API balance) and keybind enhancements.
+
 [Deep Code](https://github.com/lessweb/deepcode-cli) 是专为 `deepseek-v4` 模型优化的终端 AI 编码助手，支持深度思考、推理强度控制、Agent Skills 以及 MCP 集成。
 
 ## 安装
