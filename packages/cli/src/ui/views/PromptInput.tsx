@@ -890,6 +890,11 @@ export const PromptInput = React.memo(function PromptInput({
       return;
     }
 
+    if (trimmed === "exit") {
+      onExitShortcut?.();
+      return;
+    }
+
     if (trimmed.startsWith("/")) {
       const exactMatch = findExactSlashCommand(slashItems, trimmed.split(/\s+/, 1)[0]);
       if (exactMatch) {
