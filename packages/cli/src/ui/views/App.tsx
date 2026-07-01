@@ -360,7 +360,7 @@ function App({ projectRoot, initialPrompt, resumeSessionId, onRestart }: AppProp
   const handlePrompt = useCallback(
     async (submission: PromptSubmission) => {
       if (submission.command === "exit") {
-        handleExit({ showCommand: true, showSummary: true });
+        handleExit({ showCommand: false, showSummary: false });
         return;
       }
       if (submission.command === "new") {
